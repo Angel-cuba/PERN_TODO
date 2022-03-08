@@ -11,7 +11,15 @@ const getAllTodo = async (req, res) => {
 };
 
 const getOneTodo = async (req, res) => {
-	res.send('only one');
+	try {
+		const { id } = req.params;
+
+		const sql = 'SELECT * FROM todo WHERE todo_id= $1';
+		const one = await pool.query(sql, [id]);
+		res.status(200).json(one.rows);
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
 const createTodo = async (req, res) => {
@@ -26,11 +34,26 @@ const createTodo = async (req, res) => {
 };
 
 const updateTodo = async (req, res) => {
-	res.send('updating');
+	try {
+		const { id } = req.params;
+		const { description } = req.body;
+		const sql = 'UPDATE todo SET description = $1 WHERE todo_id = $2';
+		const updateTodo = await pool.query(sql, [description, id]);
+		res.status(200).json('Todo updated');
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
 const deleteTodo = async (req, res) => {
-	res.send('delete');
+	try {
+		const { id } = req.params;
+		const sql = 'DELETE FROM todo WHERE todo_id = $1';
+		const deleteTodo = await pool.query(sql, [id]);
+		res.status(200).json('Todo deleted');
+	} catch (error) {
+		console.error(error.message);
+	}
 };
 
 module.exports = {
