@@ -13,7 +13,7 @@ export default function InputTodo() {
 			});
 			console.log(response);
 		} catch (error) {
-			console.error(error);
+			console.error(error.message);
 		}
 	};
 
