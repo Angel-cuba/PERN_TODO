@@ -1,17 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import InputTodo from './components/InputTodo';
-import ListTodos from './components/ListTodos';
+
+import { Route, Routes } from 'react-router-dom';
+import { ListTodos } from './components/ListTodos';
 
 function App() {
 	return (
-		<div className="App">
-			<div className="container">
-				<h1>Fron side</h1>
-				<InputTodo />
-				<ListTodos />
-			</div>
-		</div>
+		<Routes>
+			<Route path="" element={<ListTodos />} />
+			<Route path="/:id" element={<ListTodos />} />
+		</Routes>
 	);
 }
 

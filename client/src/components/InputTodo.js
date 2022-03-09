@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function InputTodo() {
+export const InputTodo = ({ id }) => {
 	const [description, setDescription] = useState('');
 	const onSubmitForm = async (e) => {
 		e.preventDefault();
@@ -18,7 +18,7 @@ export default function InputTodo() {
 
 	return (
 		<>
-			<h1 className="text-center mt-5">InputTodo</h1>
+			<h1 className="text-center mt-5">{id ? 'Edit task' : 'Create task'}</h1>
 			<form className="d-flex mt-5" onSubmit={onSubmitForm}>
 				<input
 					type="text"
@@ -26,8 +26,8 @@ export default function InputTodo() {
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
-				<button className="btn btn-success">Add</button>
+				<button className="btn btn-success">{id ? 'Editing' : 'Create'}</button>
 			</form>
 		</>
 	);
-}
+};
