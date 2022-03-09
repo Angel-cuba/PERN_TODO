@@ -12,6 +12,14 @@ export default function ListTodos() {
 			console.error(error.message);
 		}
 	};
+
+	const deleteTodo = async (id) => {
+		try {
+			await fetch('http://localhost:4000/deleteTodo/' + id, { method: 'DELETE' });
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
 	useEffect(() => {
 		getAllTodo();
 	}, [todos]);
@@ -36,7 +44,9 @@ export default function ListTodos() {
 								<button className="btn btn-outline-success">Edit</button>
 							</td>
 							<td>
-								<button className="btn btn-danger">Delete</button>
+								<button className="btn btn-danger" onClick={() => deleteTodo(todo.todo_id)}>
+									Delete
+								</button>
 							</td>
 						</tr>
 					))}
