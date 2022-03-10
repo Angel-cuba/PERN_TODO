@@ -20,6 +20,7 @@ export const ListTodos = () => {
 	const deleteTodo = async (id) => {
 		try {
 			await fetch('http://localhost:4000/deleteTodo/' + id, { method: 'DELETE' });
+			setTodos(todos.filter((todo) => todo.todo_id !== id));
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -33,10 +34,10 @@ export const ListTodos = () => {
 	};
 	return (
 		<>
-			<div className="container">
+			<div className="container text-center p-5">
 				<InputTodo />
-				<h1>All tasks and descriptions</h1>
-				{openTodo && <EditTodo />}
+				<h1 className="pt-4">All tasks and descriptions</h1>
+				{openTodo && <EditTodo openTodo={openTodo} setOpenTodo={setOpenTodo} />}
 				<table className="table mt-6 text-center">
 					<thead>
 						<tr>
@@ -62,7 +63,7 @@ export const ListTodos = () => {
 									<td>
 										<Link to={`/${todo.todo_id}`}>
 											<button className="btn btn-success" onClick={() => modalControl()}>
-												{openTodo ? 'Close editing' : 'Edit'}
+												Edit
 											</button>
 										</Link>
 									</td>

@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
 
-export const InputTodo = ({ id }) => {
+export const InputTodo = ({ id, valueDescription }) => {
+	console.log(valueDescription);
 	const [description, setDescription] = useState('');
 	const onSubmitForm = async (e) => {
 		e.preventDefault();
 		try {
 			const body = { description };
-			await fetch('http://localhost:4000/createTodo', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(body),
-			});
+			if (id) {
+				await fetch(`http://localhost:4000/updateTodo/${id}`, {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				});
+			} else {
+				await fetch('http://localhost:4000/createTodo', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				});
+			}
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -23,7 +32,7 @@ export const InputTodo = ({ id }) => {
 				<input
 					type="text"
 					className="form-control"
-					value={description}
+					value={description || valueDescription}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
 				<button className="btn btn-success">{id ? 'Editing' : 'Create'}</button>
