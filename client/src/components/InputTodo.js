@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createTodo, updateTodo } from '../api/request';
 
 export const InputTodo = ({ id, valueDescription }) => {
 	console.log(valueDescription);
@@ -8,21 +9,19 @@ export const InputTodo = ({ id, valueDescription }) => {
 		try {
 			const body = { description };
 			if (id) {
-				await fetch(`http://localhost:4000/updateTodo/${id}`, {
-					method: 'PUT',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				});
+				updateTodo(id, body);
+				window.location.reload();
 			} else {
-				await fetch('http://localhost:4000/createTodo', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-				});
+				createTodo(body);
+				window.location.reload();
 			}
 		} catch (error) {
 			console.error(error.message);
 		}
+	};
+
+	const handleTodo = (e) => {
+		setDescription(e.target.value);
 	};
 
 	return (
@@ -32,8 +31,10 @@ export const InputTodo = ({ id, valueDescription }) => {
 				<input
 					type="text"
 					className="form-control"
-					value={description || valueDescription}
-					onChange={(e) => setDescription(e.target.value)}
+					id="description"
+					placeholder={id ? valueDescription : description}
+					value={description}
+					onChange={(e) => handleTodo(e)}
 				/>
 				<button className="btn btn-success">{id ? 'Editing' : 'Create'}</button>
 			</form>

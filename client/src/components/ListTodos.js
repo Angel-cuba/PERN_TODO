@@ -2,31 +2,32 @@ import { useState, useEffect } from 'react';
 import { EditTodo } from '../components/EditTodo';
 import { InputTodo } from '../components/InputTodo';
 import { Link } from 'react-router-dom';
+import { deleteTodo, getAllTodo } from '../api/request';
 
 export const ListTodos = () => {
 	const [todos, setTodos] = useState([]);
 	const [openTodo, setOpenTodo] = useState(false);
 
-	const getAllTodo = async () => {
+	const loadTodo = async () => {
 		try {
-			const response = await fetch('http://localhost:4000/allTodos');
-			const jsonData = await response.json();
-			setTodos(jsonData);
+			getAllTodo()
+				.then((response) => response.json())
+				.then((data) => setTodos(data));
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
 
-	const deleteTodo = async (id) => {
+	const deleteOneTodo = async (id) => {
 		try {
-			await fetch('http://localhost:4000/deleteTodo/' + id, { method: 'DELETE' });
+			deleteTodo(id);
 			setTodos(todos.filter((todo) => todo.todo_id !== id));
 		} catch (error) {
 			console.error(error.message);
 		}
 	};
 	useEffect(() => {
-		getAllTodo();
+		loadTodo();
 	}, []);
 
 	const modalControl = () => {
@@ -68,7 +69,7 @@ export const ListTodos = () => {
 										</Link>
 									</td>
 									<td>
-										<button className="btn btn-danger" onClick={() => deleteTodo(todo.todo_id)}>
+										<button className="btn btn-danger" onClick={() => deleteOneTodo(todo.todo_id)}>
 											Delete
 										</button>
 									</td>
